@@ -40,4 +40,12 @@ class QuestionTable {
       whereArgs: [questionId],
     );
   }
+
+  Future<List<Question>> getAllQuestions() async {
+    Database db = await _dbHelper.database;
+    List<Map<String, dynamic>> maps = await db.query('questions');
+    return List.generate(maps.length, (i) {
+      return Question.fromMap(maps[i]);
+    });
+  }
 }

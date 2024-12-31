@@ -4,6 +4,7 @@ import '../models/question.dart';
 import '../storage/questionTable.dart';
 import '../widgets/lemonCardList.dart';
 import 'lemonCardDetailPage.dart';
+import 'testPage.dart';
 
 class LemonTreePage extends StatefulWidget {
   final Lesson lesson;
@@ -72,7 +73,12 @@ class _LemonTreePageState extends State<LemonTreePage> {
             const SizedBox(width: 16),
             FloatingActionButton(
               onPressed: () {
-                // TODO: Implement test functionality
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TestPage(),
+                  ),
+                );
               },
               child: const Icon(Icons.play_arrow),
               tooltip: 'Test questions',
