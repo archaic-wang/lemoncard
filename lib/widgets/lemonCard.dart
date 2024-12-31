@@ -22,9 +22,7 @@ class _LemonCardState extends State<LemonCard> {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.all(8.0),
-      child: InkWell(
-        onTap: widget.onTap,
-        child: Padding(
+      child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,18 +66,9 @@ class _LemonCardState extends State<LemonCard> {
                   ),
                   Row(
                     children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: IconButton(
-                          icon: const Icon(Icons.edit, color: Colors.white),
-                          onPressed: widget.onTap,
-                          padding: EdgeInsets.zero,
-                        ),
+                      IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: widget.onTap,
                       ),
                       const SizedBox(width: 8.0),
                       IconButton(
