@@ -4,6 +4,7 @@ import '../models/lesson.dart';
 import '../storage/lessonTable.dart';
 import '../widgets/lessonList.dart';
 import 'lessonDetailPage.dart';
+import 'lemonTreePage.dart';
 
 class LessonListPage extends StatefulWidget {
   final Student student;
@@ -69,7 +70,10 @@ class _LessonListPageState extends State<LessonListPage> {
         lessons: lessons,
         onEdit: _navigateToEditLesson,
         onItemTap: (lesson) {
-          // Handle item tap if needed
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => LemonTreePage(lesson: lesson)),
+          );
         },
       ),
     );

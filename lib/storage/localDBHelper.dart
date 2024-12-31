@@ -40,5 +40,16 @@ class DatabaseHelper {
         FOREIGN KEY (studentId) REFERENCES students (id) ON DELETE CASCADE
       )
     ''');
+    await db.execute('''
+      CREATE TABLE questions (
+        question_id INTEGER PRIMARY KEY,
+        lesson_id INTEGER,
+        question TEXT,
+        answer TEXT,
+        n_correct INTEGER DEFAULT 0,
+        n_wrong INTEGER DEFAULT 0,
+        FOREIGN KEY (lesson_id) REFERENCES lessons (id) ON DELETE CASCADE
+      )
+    ''');
   }
 }
