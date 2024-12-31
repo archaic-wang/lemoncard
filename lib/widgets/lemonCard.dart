@@ -45,34 +45,54 @@ class _LemonCardState extends State<LemonCard> {
               ),
               const SizedBox(height: 8.0),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(
-                    Icons.check_circle,
-                    color: Colors.green,
-                    size: 16.0,
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: Colors.green,
+                        size: 16.0,
+                      ),
+                      const SizedBox(width: 4.0),
+                      Text('${widget.question.nCorrect} correct'),
+                      const SizedBox(width: 16.0),
+                      Icon(
+                        Icons.cancel,
+                        color: Colors.red,
+                        size: 16.0,
+                      ),
+                      const SizedBox(width: 4.0),
+                      Text('${widget.question.nWrong} wrong'),
+                    ],
                   ),
-                  const SizedBox(width: 4.0),
-                  Text('${widget.question.nCorrect} correct'),
-                  const SizedBox(width: 16.0),
-                  Icon(
-                    Icons.cancel,
-                    color: Colors.red,
-                    size: 16.0,
+                  Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.edit, color: Colors.white),
+                          onPressed: widget.onTap,
+                          padding: EdgeInsets.zero,
+                        ),
+                      ),
+                      const SizedBox(width: 8.0),
+                      IconButton(
+                        icon: Icon(_showAnswer ? Icons.visibility_off : Icons.visibility),
+                        onPressed: () {
+                          setState(() {
+                            _showAnswer = !_showAnswer;
+                          });
+                        },
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 4.0),
-                  Text('${widget.question.nWrong} wrong'),
                 ],
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: IconButton(
-                  icon: Icon(_showAnswer ? Icons.visibility_off : Icons.visibility),
-                  onPressed: () {
-                    setState(() {
-                      _showAnswer = !_showAnswer;
-                    });
-                  },
-                ),
               ),
             ],
           ),

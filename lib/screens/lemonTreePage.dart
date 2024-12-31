@@ -58,10 +58,28 @@ class _LemonTreePageState extends State<LemonTreePage> {
         questions: questions,
         onItemTap: (q) => _navigateToQuestionDetail(question: q),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _navigateToQuestionDetail(),
-        child: const Icon(Icons.add),
-        tooltip: 'Add new question',
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(left: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              onPressed: () => _navigateToQuestionDetail(),
+              child: const Icon(Icons.add),
+              tooltip: 'Add new question',
+              heroTag: 'add_question',
+            ),
+            const SizedBox(width: 16),
+            FloatingActionButton(
+              onPressed: () {
+                // TODO: Implement test functionality
+              },
+              child: const Icon(Icons.play_arrow),
+              tooltip: 'Test questions',
+              heroTag: 'test_questions',
+            ),
+          ],
+        ),
       ),
     );
   }
