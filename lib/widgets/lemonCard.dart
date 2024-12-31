@@ -85,7 +85,6 @@ class _LemonCardState extends State<LemonCard> {
               ),
             ],
           ),
-        ),
       ),
     );
   }
