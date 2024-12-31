@@ -34,32 +34,35 @@ class _LemonCardState extends State<LemonCard> {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 8.0),
-              if (_showAnswer) ...[
-                Text(
-                  widget.question.answer,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                const SizedBox(height: 8.0),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.check_circle,
-                      color: Colors.green,
-                      size: 16.0,
-                    ),
-                    const SizedBox(width: 4.0),
-                    Text('${widget.question.nCorrect} correct'),
-                    const SizedBox(width: 16.0),
-                    Icon(
-                      Icons.cancel,
-                      color: Colors.red,
-                      size: 16.0,
-                    ),
-                    const SizedBox(width: 4.0),
-                    Text('${widget.question.nWrong} wrong'),
-                  ],
-                ),
-              ],
+              Container(
+                height: 48.0, // Estimated height for answer text
+                child: _showAnswer
+                    ? Text(
+                        widget.question.answer,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      )
+                    : const SizedBox.shrink(),
+              ),
+              const SizedBox(height: 8.0),
+              Row(
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    color: Colors.green,
+                    size: 16.0,
+                  ),
+                  const SizedBox(width: 4.0),
+                  Text('${widget.question.nCorrect} correct'),
+                  const SizedBox(width: 16.0),
+                  Icon(
+                    Icons.cancel,
+                    color: Colors.red,
+                    size: 16.0,
+                  ),
+                  const SizedBox(width: 4.0),
+                  Text('${widget.question.nWrong} wrong'),
+                ],
+              ),
               Align(
                 alignment: Alignment.centerRight,
                 child: IconButton(
