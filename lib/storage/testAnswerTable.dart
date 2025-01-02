@@ -49,4 +49,34 @@ class TestAnswerTable {
       return null;
     }
   }
+
+  Future<List<int>> getLastTimeWrongQuestionIds() async {
+    final db = await _dbHelper.database;
+    
+    // 1. Find the most recent testId
+    final List<Map<String, dynamic>> latestTest = await db.query(
+      'testAnswerTable',
+      columns: ['testId'],
+      orderBy: 'datetime DESC',
+      limit: 1
+    );
+
+    if (latestTest.isEmpty) {
+      return [];
+    }
+
+    final int latestTestId = latestTest.first['testId'] as int;
+
+    // 2. Query testAnswers with that testId where answerCorrectly = false
+    final List<Map<String, dynamic>> wrongAnswers = await db.query(
+      'testAnswerTable',
+      columns: ['questionId'],
+      where: 'testId = ? AND answerCorrectly = ?',
+      whereArgs: [latestTestId, 0],
+      distinct: true
+    );
+
+    // 3. Return a list of questionIds
+    return wrongAnswers.map((m) => m['questionId'] as int).toList();
+  }
 }

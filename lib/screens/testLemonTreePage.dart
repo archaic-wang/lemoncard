@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import '../constants/config.dart';
 import '../models/question.dart';
 import '../storage/questionTable.dart';
+import '../storage/testAnswerTable.dart';
 import '../widgets/testLemonCardList.dart';
 
 class TestLemonTreePage extends StatefulWidget {
-  const TestLemonTreePage({super.key});
+  final int lessonId;
+  const TestLemonTreePage({super.key, required this.lessonId});
 
   @override
   State<TestLemonTreePage> createState() => _TestLemonTreePageState();
@@ -24,13 +26,61 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
     _loadQuestions();
   }
 
-  Future<void> _loadQuestions() async {
-    List<Question> allQuestions = await _questionTable.getAllQuestions();
+  Future<void> _loadRandomQuestions() async {
+    List<Question> allQuestions = await _questionTable.getQuestionsByLessonId(widget.lessonId);
     allQuestions.shuffle();
     setState(() {
       _testQuestions = allQuestions.take(LemonCardConfig.TEST_QUESTION_COUNT).toList();
       _isLoading = false;
     });
+  }
+
+  Future<bool> _showRandomQuestionDialog() async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          title: const Text('All Questions Answered Correctly'),
+          content: const Text('The student has answered the questions correctly. Do you want to start a test with random questions?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx, false);
+              },
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx, true);
+              },
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+    return result ?? false;
+  }
+
+  Future<void> _loadQuestions() async {
+    final testAnswerTable = TestAnswerTable();
+    final wrongQuestionIds = await testAnswerTable.getLastTimeWrongQuestionIds();
+    
+    if (wrongQuestionIds.isEmpty) {
+      final shouldLoadRandom = await _showRandomQuestionDialog();
+      if (shouldLoadRandom) {
+        await _loadRandomQuestions();
+      } else {
+        Navigator.pop(context);
+      }
+    } else {
+      final questions = await _questionTable.getQuestionsByIds(wrongQuestionIds);
+      questions.shuffle(); // Randomize order of wrong questions
+      setState(() {
+        _testQuestions = questions.take(LemonCardConfig.TEST_QUESTION_COUNT).toList();
+        _isLoading = false;
+      });
+    }
   }
 
   @override

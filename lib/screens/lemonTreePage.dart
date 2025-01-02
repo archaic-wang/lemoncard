@@ -76,7 +76,9 @@ class _LemonTreePageState extends State<LemonTreePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const TestLemonTreePage(),
+                    builder: (context) => TestLemonTreePage(
+                      lessonId: widget.lesson.id,
+                    ),
                   ),
                 ).then((_) {
                   // after pop, refresh questions to update n_correct/n_wrong

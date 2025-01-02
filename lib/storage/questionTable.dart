@@ -48,4 +48,20 @@ class QuestionTable {
       return Question.fromMap(maps[i]);
     });
   }
+
+  Future<List<Question>> getQuestionsByIds(List<int> questionIds) async {
+    if (questionIds.isEmpty) {
+      return [];
+    }
+    Database db = await _dbHelper.database;
+    final placeholders = List.filled(questionIds.length, '?').join(',');
+    List<Map<String, dynamic>> maps = await db.query(
+      'questions',
+      where: 'question_id IN ($placeholders)',
+      whereArgs: questionIds,
+    );
+    return List.generate(maps.length, (i) {
+      return Question.fromMap(maps[i]);
+    });
+  }
 }
