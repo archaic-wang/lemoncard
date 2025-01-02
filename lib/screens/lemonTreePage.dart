@@ -124,48 +124,52 @@ class _LemonTreePageState extends State<LemonTreePage> {
                 right: 16,
                 left: 16,
                 child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FloatingActionButton(
-              onPressed: () => _navigateToQuestionDetail(),
-              child: const Icon(Icons.add),
-              tooltip: 'Add new question',
-              heroTag: 'add_question',
-            ),
-            const SizedBox(width: 16),
-            FloatingActionButton(
-              onPressed: _resetAnswers,
-              child: const Icon(Icons.refresh),
-              tooltip: 'Reset answers',
-              heroTag: 'reset_answers',
-            ),
-            const SizedBox(width: 16),
-            FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TestLemonTreePage(
-                      lessonId: widget.lesson.id,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    FloatingActionButton(
+                      onPressed: () => _navigateToQuestionDetail(),
+                      child: const Icon(Icons.add),
+                      tooltip: 'Add new question',
+                      heroTag: 'add_question',
                     ),
-                    fullscreenDialog: true,
-                  ),
-                ).then((_) async {
-                  // after pop, refresh questions and latest answers
-                  await _loadQuestions();
-                  final map = await _loadLatestAnswers();
-                  setState(() {
-                    latestAnswers = map;
-                  });
-                });
-              },
-              child: const Icon(Icons.play_arrow),
-              tooltip: 'Test questions',
-              heroTag: 'test_questions',
-            ),
-          ],
-        ),
+                    const SizedBox(width: 16),
+                    FloatingActionButton(
+                      onPressed: _resetAnswers,
+                      child: const Icon(Icons.refresh),
+                      tooltip: 'Reset answers',
+                      heroTag: 'reset_answers',
+                    ),
+                    const SizedBox(width: 16),
+                    FloatingActionButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TestLemonTreePage(
+                              lessonId: widget.lesson.id,
+                            ),
+                            fullscreenDialog: true,
+                          ),
+                        ).then((_) async {
+                          // after pop, refresh questions and latest answers
+                          await _loadQuestions();
+                          final map = await _loadLatestAnswers();
+                          setState(() {
+                            latestAnswers = map;
+                          });
+                        });
+                      },
+                      child: const Icon(Icons.play_arrow),
+                      tooltip: 'Test questions',
+                      heroTag: 'test_questions',
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
-    ]);
+    );
   }
 }

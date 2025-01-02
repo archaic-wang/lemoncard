@@ -98,58 +98,60 @@ class _UserDetailPageState extends State<UserDetailPage> {
               key: _formKey,
               child: Column(
                 children: [
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _ageController,
-                decoration: const InputDecoration(labelText: 'Age'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter an age';
-                  }
-                  if (int.tryParse(value) == null) {
-                    return 'Please enter a valid number';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: _saveStudent,
-                    child: const Text('Confirm'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context, false);
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(labelText: 'Name'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a name';
+                      }
+                      return null;
                     },
-                    child: const Text('Cancel'),
                   ),
-                  if (widget.student != null)
-                    ElevatedButton(
-                      onPressed: _deleteStudent,
-                      child: const Text(
-                        'Delete',
-                        style: TextStyle(color: Colors.red),
+                  TextFormField(
+                    controller: _ageController,
+                    decoration: const InputDecoration(labelText: 'Age'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter an age';
+                      }
+                      if (int.tryParse(value) == null) {
+                        return 'Please enter a valid number';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: _saveStudent,
+                        child: const Text('Confirm'),
                       ),
-                    )
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context, false);
+                        },
+                        child: const Text('Cancel'),
+                      ),
+                      if (widget.student != null)
+                        ElevatedButton(
+                          onPressed: _deleteStudent,
+                          child: const Text(
+                            'Delete',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        )
+                    ],
+                  ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),
-    ));
+    );
   }
 }
