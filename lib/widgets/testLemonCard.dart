@@ -34,23 +34,7 @@ class TestLemonCard extends StatelessWidget {
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8.0),
-            Container(
-              height: 48.0,
-              alignment: Alignment.bottomLeft,
-              child: selectedState == "none"
-                  ? const Text(
-                      'not answered',
-                      style: TextStyle(fontSize: 16.0),
-                    )
-                  : Text(
-                      selectedState == "correct" ? "Answered correctly" : "Answered incorrectly",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        color: selectedState == "correct" ? Colors.green : Colors.red,
-                      ),
-                    ),
-            ),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
