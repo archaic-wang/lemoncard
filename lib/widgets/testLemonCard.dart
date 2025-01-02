@@ -33,6 +33,15 @@ class _TestLemonCardState extends State<TestLemonCard> {
         datetime: DateTime.now(),
       ),
     );
+    final updatedQuestion = Question(
+      questionId: widget.question.questionId,
+      lessonId: widget.question.lessonId,
+      question: widget.question.question,
+      answer: widget.question.answer,
+      nCorrect: widget.question.nCorrect + 1,
+      nWrong: widget.question.nWrong,
+    );
+    await widget.questionTable.updateQuestion(updatedQuestion);
     setState(() {
       _showNotAnswer = false;
     });
@@ -49,6 +58,15 @@ class _TestLemonCardState extends State<TestLemonCard> {
         datetime: DateTime.now(),
       ),
     );
+    final updatedQuestion = Question(
+      questionId: widget.question.questionId,
+      lessonId: widget.question.lessonId,
+      question: widget.question.question,
+      answer: widget.question.answer,
+      nCorrect: widget.question.nCorrect,
+      nWrong: widget.question.nWrong + 1,
+    );
+    await widget.questionTable.updateQuestion(updatedQuestion);
     setState(() {
       _showNotAnswer = false;
     });
@@ -70,30 +88,49 @@ class _TestLemonCardState extends State<TestLemonCard> {
             const SizedBox(height: 8.0),
             Container(
               height: 48.0,
+              alignment: Alignment.bottomLeft,
               child: _showNotAnswer
                   ? const Text(
-                      '[not answer]',
+                      'not answer',
                       style: TextStyle(fontSize: 16.0),
                     )
                   : const SizedBox.shrink(),
             ),
             const SizedBox(height: 8.0),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                  icon: const Icon(Icons.check_circle_outline),
-                  color: Colors.green,
-                  onPressed: _markCorrect,
-                  tooltip: 'Mark as correct',
+                // Stats display
+                Row(
+                  children: [
+                    Text(
+                      'Correct: ${widget.question.nCorrect}',
+                      style: const TextStyle(color: Colors.green),
+                    ),
+                    const SizedBox(width: 16),
+                    Text(
+                      'Wrong: ${widget.question.nWrong}',
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  ],
                 ),
-                IconButton(
-                  icon: const Icon(Icons.cancel_outlined),
-                  color: Colors.red,
-                  onPressed: _markWrong,
-                  tooltip: 'Mark as wrong',
+                // Action buttons
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.check_circle_outline),
+                      color: Colors.green,
+                      onPressed: _markCorrect,
+                      tooltip: 'Mark as correct',
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.cancel_outlined),
+                      color: Colors.red,
+                      onPressed: _markWrong,
+                      tooltip: 'Mark as wrong',
+                    ),
+                  ],
                 ),
-
               ],
             ),
           ],

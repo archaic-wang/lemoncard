@@ -78,7 +78,10 @@ class _LemonTreePageState extends State<LemonTreePage> {
                   MaterialPageRoute(
                     builder: (context) => const TestLemonTreePage(),
                   ),
-                );
+                ).then((_) {
+                  // after pop, refresh questions to update n_correct/n_wrong
+                  _loadQuestions();
+                });
               },
               child: const Icon(Icons.play_arrow),
               tooltip: 'Test questions',
