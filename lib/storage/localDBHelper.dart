@@ -51,5 +51,18 @@ class DatabaseHelper {
         FOREIGN KEY (lesson_id) REFERENCES lessons (id) ON DELETE CASCADE
       )
     ''');
+    
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS testTable (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        testId INTEGER,
+        lessonId INTEGER,
+        questionId INTEGER,
+        datetime TEXT,
+        answer_correctly INTEGER,
+        FOREIGN KEY (lessonId) REFERENCES lessons (id),
+        FOREIGN KEY (questionId) REFERENCES questions (question_id)
+      )
+    ''');
   }
 }

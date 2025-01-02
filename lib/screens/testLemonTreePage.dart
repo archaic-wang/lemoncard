@@ -15,10 +15,12 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
   final QuestionTable _questionTable = QuestionTable();
   List<Question> _testQuestions = [];
   bool _isLoading = true;
+  int _testId = 0;
 
   @override
   void initState() {
     super.initState();
+    _testId = DateTime.now().millisecondsSinceEpoch;
     _loadQuestions();
   }
 
@@ -45,6 +47,7 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
                   child: TestLemonCardList(
                     questions: _testQuestions,
                     questionTable: _questionTable,
+                    testId: _testId,
                   ),
                 ),
                 Padding(

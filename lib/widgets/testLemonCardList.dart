@@ -6,11 +6,13 @@ import 'testLemonCard.dart';
 class TestLemonCardList extends StatelessWidget {
   final List<Question> questions;
   final QuestionTable questionTable;
+  final int testId;
 
   const TestLemonCardList({
     super.key,
     required this.questions,
     required this.questionTable,
+    required this.testId,
   });
 
   @override
@@ -20,9 +22,19 @@ class TestLemonCardList extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       itemBuilder: (context, index) {
         final question = questions[index];
-        return TestLemonCard(
-          question: question,
-          questionTable: questionTable,
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return TestLemonCard(
+              question: question,
+              questionTable: questionTable,
+              testId: testId,
+              onHide: () {
+                setState(() {
+                  questions.removeAt(index);
+                });
+              },
+            );
+          },
         );
       },
     );

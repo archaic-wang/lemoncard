@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import '../models/question.dart';
 import '../storage/questionTable.dart';
+import '../storage/testTable.dart';
 
 class TestLemonCard extends StatefulWidget {
   final Question question;
   final QuestionTable questionTable;
+  final int testId;
+  final VoidCallback? onHide;
 
   const TestLemonCard({
     super.key,
     required this.question,
     required this.questionTable,
+    required this.testId,
+    this.onHide,
   });
 
   @override
@@ -18,29 +23,27 @@ class TestLemonCard extends StatefulWidget {
 
 class _TestLemonCardState extends State<TestLemonCard> {
   Future<void> _markCorrect() async {
-    await widget.questionTable.updateQuestion(
-      Question(
-        questionId: widget.question.questionId,
-        lessonId: widget.question.lessonId,
-        question: widget.question.question,
-        answer: widget.question.answer,
-        nCorrect: widget.question.nCorrect + 1,
-        nWrong: widget.question.nWrong,
-      ),
+    final testTable = TestTable();
+    await testTable.insertTestRecord(
+      testId: widget.testId,
+      lessonId: widget.question.lessonId,
+      questionId: widget.question.questionId,
+      answerCorrectly: true,
+      dateTime: DateTime.now(),
     );
+    widget.onHide?.call();
   }
 
   Future<void> _markWrong() async {
-    await widget.questionTable.updateQuestion(
-      Question(
-        questionId: widget.question.questionId,
-        lessonId: widget.question.lessonId,
-        question: widget.question.question,
-        answer: widget.question.answer,
-        nCorrect: widget.question.nCorrect,
-        nWrong: widget.question.nWrong + 1,
-      ),
+    final testTable = TestTable();
+    await testTable.insertTestRecord(
+      testId: widget.testId,
+      lessonId: widget.question.lessonId,
+      questionId: widget.question.questionId,
+      answerCorrectly: false,
+      dateTime: DateTime.now(),
     );
+    widget.onHide?.call();
   }
 
   @override
@@ -59,10 +62,6 @@ class _TestLemonCardState extends State<TestLemonCard> {
             const SizedBox(height: 8.0),
             Container(
               height: 48.0,
-              child: Text(
-                widget.question.answer,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
             ),
             const SizedBox(height: 8.0),
             Row(
