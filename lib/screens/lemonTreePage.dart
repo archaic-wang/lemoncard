@@ -70,6 +70,7 @@ class _LemonTreePageState extends State<LemonTreePage> {
           lesson: widget.lesson, 
           question: question,
         ),
+        fullscreenDialog: true,
       ),
     );
     if (result == true) {
@@ -79,19 +80,50 @@ class _LemonTreePageState extends State<LemonTreePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Lemon Tree: ${widget.lesson.name}'),
-        elevation: 2,
-      ),
-      body: LemonCardList(
-        questions: questions,
-        onItemTap: (q) => _navigateToQuestionDetail(question: q),
-        latestAnswers: latestAnswers,
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(left: 30),
-        child: Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          color: Theme.of(context).primaryColor,
+          child: SafeArea(
+            bottom: false,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Lemon Tree: ${widget.lesson.name}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Stack(
+            children: [
+              LemonCardList(
+                questions: questions,
+                onItemTap: (q) => _navigateToQuestionDetail(question: q),
+                latestAnswers: latestAnswers,
+              ),
+              Positioned(
+                bottom: 16,
+                right: 16,
+                left: 16,
+                child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton(
@@ -116,6 +148,7 @@ class _LemonTreePageState extends State<LemonTreePage> {
                     builder: (context) => TestLemonTreePage(
                       lessonId: widget.lesson.id,
                     ),
+                    fullscreenDialog: true,
                   ),
                 ).then((_) async {
                   // after pop, refresh questions and latest answers
@@ -133,6 +166,6 @@ class _LemonTreePageState extends State<LemonTreePage> {
           ],
         ),
       ),
-    );
+    ]);
   }
 }

@@ -42,7 +42,10 @@ class _StudentCardListPageState extends State<StudentCardListPage> {
   Future<void> _navigateToNewStudent() async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const UserDetailPage()),
+      MaterialPageRoute(
+        builder: (context) => const UserDetailPage(),
+        fullscreenDialog: true,
+      ),
     );
 
     if (result == true) {
@@ -53,7 +56,10 @@ class _StudentCardListPageState extends State<StudentCardListPage> {
   Future<void> _navigateToEditStudent(Student student) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => UserDetailPage(student: student)),
+      MaterialPageRoute(
+        builder: (context) => UserDetailPage(student: student),
+        fullscreenDialog: true,
+      ),
     );
 
     if (result == true) {

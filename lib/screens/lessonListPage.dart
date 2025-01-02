@@ -35,7 +35,10 @@ class _LessonListPageState extends State<LessonListPage> {
   Future<void> _navigateToNewLesson() async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => LessonDetailPage(studentId: widget.student.id)),
+      MaterialPageRoute(
+        builder: (context) => LessonDetailPage(studentId: widget.student.id),
+        fullscreenDialog: true,
+      ),
     );
 
     if (result == true) {
@@ -46,7 +49,10 @@ class _LessonListPageState extends State<LessonListPage> {
   Future<void> _navigateToEditLesson(Lesson lesson) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => LessonDetailPage(lesson: lesson, studentId: widget.student.id)),
+      MaterialPageRoute(
+        builder: (context) => LessonDetailPage(lesson: lesson, studentId: widget.student.id),
+        fullscreenDialog: true,
+      ),
     );
 
     if (result == true) {
@@ -56,26 +62,47 @@ class _LessonListPageState extends State<LessonListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Lessons for ${widget.student.name}'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: _navigateToNewLesson,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          color: Theme.of(context).primaryColor,
+          child: SafeArea(
+            bottom: false,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Lessons for ${widget.student.name}',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.add, color: Colors.white),
+                    onPressed: _navigateToNewLesson,
+                  ),
+                ],
+              ),
+            ),
           ),
-        ],
-      ),
-      body: LessonList(
-        lessons: lessons,
-        onEdit: _navigateToEditLesson,
-        onItemTap: (lesson) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => LemonTreePage(lesson: lesson)),
-          );
-        },
-      ),
+        ),
+        Expanded(
+          child: LessonList(
+            lessons: lessons,
+            onEdit: _navigateToEditLesson,
+            onItemTap: (lesson) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LemonTreePage(lesson: lesson),
+                  fullscreenDialog: true,
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
