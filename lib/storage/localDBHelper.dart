@@ -20,6 +20,23 @@ class DatabaseHelper {
       path,
       version: 4,
       onCreate: _onCreate,
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 4) {
+          await db.execute('DROP TABLE IF EXISTS testTable');
+          await db.execute('''
+            CREATE TABLE IF NOT EXISTS testAnswerTable (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              testId INTEGER,
+              lessonId INTEGER,
+              questionId INTEGER,
+              datetime TIMESTAMP,
+              answer_correctly INTEGER,
+              FOREIGN KEY (lessonId) REFERENCES lessons (id),
+              FOREIGN KEY (questionId) REFERENCES questions (question_id)
+            )
+          ''');
+        }
+      },
     );
   }
 
