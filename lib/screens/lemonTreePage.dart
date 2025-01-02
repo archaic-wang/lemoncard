@@ -100,9 +100,13 @@ class _LemonTreePageState extends State<LemonTreePage> {
                       lessonId: widget.lesson.id,
                     ),
                   ),
-                ).then((_) {
-                  // after pop, refresh questions to update n_correct/n_wrong
-                  _loadQuestions();
+                ).then((_) async {
+                  // after pop, refresh questions and latest answers
+                  await _loadQuestions();
+                  final map = await _loadLatestAnswers();
+                  setState(() {
+                    latestAnswers = map;
+                  });
                 });
               },
               child: const Icon(Icons.play_arrow),

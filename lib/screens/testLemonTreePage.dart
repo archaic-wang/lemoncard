@@ -84,6 +84,11 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
     );
     await _questionTable.updateQuestion(updatedQuestion);
     setState(() {
+      // Update local question list with increments
+      final idx = _testQuestions.indexWhere((q) => q.id == question.id);
+      if (idx != -1) {
+        _testQuestions[idx] = updatedQuestion;
+      }
       _answeredMap[question.id] = true;
     });
   }
@@ -108,6 +113,11 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
     );
     await _questionTable.updateQuestion(updatedQuestion);
     setState(() {
+      // Update local question list with increments
+      final idx = _testQuestions.indexWhere((q) => q.id == question.id);
+      if (idx != -1) {
+        _testQuestions[idx] = updatedQuestion;
+      }
       _answeredMap[question.id] = true;
     });
   }
