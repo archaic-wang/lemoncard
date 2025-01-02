@@ -28,13 +28,13 @@ class _TestLemonCardState extends State<TestLemonCard> {
       TestAnswer(
         testId: widget.testId,
         lessonId: widget.question.lessonId,
-        questionId: widget.question.questionId,
+        questionId: widget.question.id,
         answerCorrectly: true,
         datetime: DateTime.now(),
       ),
     );
     final updatedQuestion = Question(
-      questionId: widget.question.questionId,
+      id: widget.question.id,
       lessonId: widget.question.lessonId,
       question: widget.question.question,
       answer: widget.question.answer,
@@ -53,13 +53,13 @@ class _TestLemonCardState extends State<TestLemonCard> {
       TestAnswer(
         testId: widget.testId,
         lessonId: widget.question.lessonId,
-        questionId: widget.question.questionId,
+        questionId: widget.question.id,
         answerCorrectly: false,
         datetime: DateTime.now(),
       ),
     );
     final updatedQuestion = Question(
-      questionId: widget.question.questionId,
+      id: widget.question.id,
       lessonId: widget.question.lessonId,
       question: widget.question.question,
       answer: widget.question.answer,

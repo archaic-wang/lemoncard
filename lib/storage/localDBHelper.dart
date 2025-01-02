@@ -18,7 +18,7 @@ class DatabaseHelper {
     String path = join(await getDatabasesPath(), dbName);
     return await openDatabase(
       path,
-      version: 4,
+      version: 5,
       onCreate: _onCreate,
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 4) {
@@ -35,6 +35,58 @@ class DatabaseHelper {
               FOREIGN KEY (questionId) REFERENCES questions (question_id)
             )
           ''');
+        }
+        if (oldVersion < 5) {
+          // Rename columns in testAnswerTable
+          await db.execute('''
+            ALTER TABLE testAnswerTable RENAME TO old_testAnswerTable;
+          ''');
+          await db.execute('''
+            CREATE TABLE testAnswerTable (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              testId INTEGER,
+              lessonId INTEGER,
+              questionId INTEGER,
+              datetime TIMESTAMP,
+              answerCorrectly INTEGER,
+              FOREIGN KEY (lessonId) REFERENCES lessons (id),
+              FOREIGN KEY (questionId) REFERENCES questions (question_id)
+            );
+          ''');
+          await db.execute('''
+            INSERT INTO testAnswerTable (
+              id, testId, lessonId, questionId, datetime, answerCorrectly
+            )
+            SELECT
+              id, testId, lessonId, questionId, datetime, answer_correctly
+            FROM old_testAnswerTable;
+          ''');
+          await db.execute('DROP TABLE old_testAnswerTable');
+
+          // Rename columns in questions table
+          await db.execute('''
+            ALTER TABLE questions RENAME TO old_questions;
+          ''');
+          await db.execute('''
+            CREATE TABLE questions (
+              id INTEGER PRIMARY KEY,
+              lessonId INTEGER,
+              question TEXT,
+              answer TEXT,
+              nCorrect INTEGER DEFAULT 0,
+              nWrong INTEGER DEFAULT 0,
+              FOREIGN KEY (lessonId) REFERENCES lessons(id) ON DELETE CASCADE
+            );
+          ''');
+          await db.execute('''
+            INSERT INTO questions (
+              id, lessonId, question, answer, nCorrect, nWrong
+            )
+            SELECT
+              question_id, lesson_id, question, answer, n_correct, n_wrong
+            FROM old_questions;
+          ''');
+          await db.execute('DROP TABLE old_questions');
         }
       },
     );

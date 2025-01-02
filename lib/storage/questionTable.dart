@@ -14,7 +14,7 @@ class QuestionTable {
     Database db = await _dbHelper.database;
     List<Map<String, dynamic>> maps = await db.query(
       'questions',
-      where: 'lesson_id = ?',
+      where: 'lessonId = ?',
       whereArgs: [lessonId],
     );
     return List.generate(maps.length, (i) {
@@ -27,8 +27,8 @@ class QuestionTable {
     return await db.update(
       'questions',
       question.toMap(),
-      where: 'question_id = ?',
-      whereArgs: [question.questionId],
+      where: 'id = ?',
+      whereArgs: [question.id],
     );
   }
 
@@ -36,7 +36,7 @@ class QuestionTable {
     Database db = await _dbHelper.database;
     return await db.delete(
       'questions',
-      where: 'question_id = ?',
+      where: 'id = ?',
       whereArgs: [questionId],
     );
   }
@@ -57,7 +57,7 @@ class QuestionTable {
     final placeholders = List.filled(questionIds.length, '?').join(',');
     List<Map<String, dynamic>> maps = await db.query(
       'questions',
-      where: 'question_id IN ($placeholders)',
+      where: 'id IN ($placeholders)',
       whereArgs: questionIds,
     );
     return List.generate(maps.length, (i) {

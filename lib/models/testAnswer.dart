@@ -22,7 +22,7 @@ class TestAnswer {
       'lessonId': lessonId,
       'questionId': questionId,
       'datetime': datetime.toIso8601String(),
-      'answer_correctly': answerCorrectly ? 1 : 0,
+      'answerCorrectly': answerCorrectly ? 1 : 0,
     };
   }
 
@@ -33,7 +33,7 @@ class TestAnswer {
       lessonId: map['lessonId'] as int,
       questionId: map['questionId'] as int,
       datetime: DateTime.parse(map['datetime'] as String),
-      answerCorrectly: map['answer_correctly'] == 1,
+      answerCorrectly: map['answerCorrectly'] == 1,
     );
   }
 }

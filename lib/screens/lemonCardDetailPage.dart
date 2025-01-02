@@ -43,7 +43,7 @@ class _LemonCardDetailPageState extends State<LemonCardDetailPage> {
   Future<void> _saveQuestion() async {
     if (_formKey.currentState!.validate()) {
       final newQuestion = Question(
-        questionId: widget.question?.questionId ?? DateTime.now().millisecondsSinceEpoch,
+        id: widget.question?.id ?? DateTime.now().millisecondsSinceEpoch,
         lessonId: widget.lesson.id,
         question: _questionController.text,
         answer: _answerController.text,
@@ -65,7 +65,7 @@ class _LemonCardDetailPageState extends State<LemonCardDetailPage> {
 
   Future<void> _deleteQuestion() async {
     if (widget.question != null) {
-      await _questionTable.deleteQuestion(widget.question!.questionId);
+      await _questionTable.deleteQuestion(widget.question!.id);
       if (mounted) {
         Navigator.pop(context, true);
       }

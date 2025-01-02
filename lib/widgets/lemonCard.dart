@@ -28,7 +28,7 @@ class _LemonCardState extends State<LemonCard> {
 
   void _loadLatestAnswer() async {
     final testAnswerTable = TestAnswerTable();
-    final result = await testAnswerTable.getLatestAnswer(widget.question.questionId);
+    final result = await testAnswerTable.getLatestAnswer(widget.question.id);
     setState(() {
       _latestAnswer = result;
     });
