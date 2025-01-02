@@ -95,4 +95,13 @@ class TestAnswerTable {
 
     return maps.map((map) => map['questionId'] as int).toList();
   }
+
+  Future<void> deleteAnswersByLessonId(int lessonId) async {
+    final db = await _dbHelper.database;
+    await db.delete(
+      'testAnswer',
+      where: 'lessonId = ?',
+      whereArgs: [lessonId],
+    );
+  }
 }

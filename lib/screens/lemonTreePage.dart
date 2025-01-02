@@ -51,6 +51,16 @@ class _LemonTreePageState extends State<LemonTreePage> {
     return resultMap;
   }
 
+  Future<void> _resetAnswers() async {
+    await TestAnswerTable().deleteAnswersByLessonId(widget.lesson.id);
+    await QuestionTable().resetCountersByLessonId(widget.lesson.id);
+    await _loadQuestions();
+    final map = await _loadLatestAnswers();
+    setState(() {
+      latestAnswers = map;
+    });
+  }
+
   Future<void> _navigateToQuestionDetail({Question? question}) async {
     // Note: LemonCardDetailPage will be created in the next step
     final result = await Navigator.push(
@@ -89,6 +99,13 @@ class _LemonTreePageState extends State<LemonTreePage> {
               child: const Icon(Icons.add),
               tooltip: 'Add new question',
               heroTag: 'add_question',
+            ),
+            const SizedBox(width: 16),
+            FloatingActionButton(
+              onPressed: _resetAnswers,
+              child: const Icon(Icons.refresh),
+              tooltip: 'Reset answers',
+              heroTag: 'reset_answers',
             ),
             const SizedBox(width: 16),
             FloatingActionButton(

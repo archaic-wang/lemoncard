@@ -64,4 +64,14 @@ class QuestionTable {
       return Question.fromMap(maps[i]);
     });
   }
+
+  Future<void> resetCountersByLessonId(int lessonId) async {
+    Database db = await _dbHelper.database;
+    await db.update(
+      'questions',
+      {'nCorrect': 0, 'nWrong': 0},
+      where: 'lessonId = ?',
+      whereArgs: [lessonId],
+    );
+  }
 }
