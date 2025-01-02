@@ -105,65 +105,9 @@ class _LemonCardDetailPageState extends State<LemonCardDetailPage> {
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 3,
-                validator: (value) => (value == null || value.isEmpty) 
-                  ? 'Please enter an answer' 
-                  : null,
+                validator: null,
               ),
-              if (widget.question != null) ...[
-                const SizedBox(height: 24.0),
-                Text(
-                  'Statistics',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 8.0),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: [
-                              const Icon(Icons.check_circle, color: Colors.green),
-                              const SizedBox(height: 8.0),
-                              Text(
-                                'Correct',
-                                style: Theme.of(context).textTheme.labelLarge,
-                              ),
-                              Text(
-                                '$_nCorrect',
-                                style: Theme.of(context).textTheme.headlineMedium,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 16.0),
-                    Expanded(
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: [
-                              const Icon(Icons.cancel, color: Colors.red),
-                              const SizedBox(height: 8.0),
-                              Text(
-                                'Wrong',
-                                style: Theme.of(context).textTheme.labelLarge,
-                              ),
-                              Text(
-                                '$_nWrong',
-                                style: Theme.of(context).textTheme.headlineMedium,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+
               const SizedBox(height: 24.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
