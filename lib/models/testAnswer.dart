@@ -1,13 +1,13 @@
-class TestRecord {
-  final int id;
+class TestAnswer {
+  final int? id;
   final int testId;
   final int lessonId;
   final int questionId;
   final DateTime datetime;
   final bool answerCorrectly;
 
-  TestRecord({
-    required this.id,
+  TestAnswer({
+    this.id,
     required this.testId,
     required this.lessonId,
     required this.questionId,
@@ -17,7 +17,7 @@ class TestRecord {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'testId': testId,
       'lessonId': lessonId,
       'questionId': questionId,
@@ -26,13 +26,13 @@ class TestRecord {
     };
   }
 
-  factory TestRecord.fromMap(Map<String, dynamic> map) {
-    return TestRecord(
-      id: map['id'],
-      testId: map['testId'],
-      lessonId: map['lessonId'],
-      questionId: map['questionId'],
-      datetime: DateTime.parse(map['datetime']),
+  factory TestAnswer.fromMap(Map<String, dynamic> map) {
+    return TestAnswer(
+      id: map['id'] as int?, // Read id as nullable int
+      testId: map['testId'] as int,
+      lessonId: map['lessonId'] as int,
+      questionId: map['questionId'] as int,
+      datetime: DateTime.parse(map['datetime'] as String),
       answerCorrectly: map['answer_correctly'] == 1,
     );
   }

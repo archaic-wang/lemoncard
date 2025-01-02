@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../models/question.dart';
-import '../models/testRecord.dart';
+import '../models/testAnswer.dart';
 import '../storage/questionTable.dart';
-import '../storage/testTable.dart';
+import '../storage/testAnswerTable.dart';
 
 class TestLemonCard extends StatefulWidget {
   final Question question;
@@ -24,10 +24,9 @@ class TestLemonCard extends StatefulWidget {
 
 class _TestLemonCardState extends State<TestLemonCard> {
   Future<void> _markCorrect() async {
-    final testTable = TestTable();
-    await testTable.insertTestRecord(
-      TestRecord(
-        id: 0, // SQLite will auto-increment this
+    final testAnswerTable = TestAnswerTable();
+    await testAnswerTable.insertTestAnswer(
+      TestAnswer(
         testId: widget.testId,
         lessonId: widget.question.lessonId,
         questionId: widget.question.questionId,
@@ -39,10 +38,9 @@ class _TestLemonCardState extends State<TestLemonCard> {
   }
 
   Future<void> _markWrong() async {
-    final testTable = TestTable();
-    await testTable.insertTestRecord(
-      TestRecord(
-        id: 0, // SQLite will auto-increment this
+    final testAnswerTable = TestAnswerTable();
+    await testAnswerTable.insertTestAnswer(
+      TestAnswer(
         testId: widget.testId,
         lessonId: widget.question.lessonId,
         questionId: widget.question.questionId,

@@ -18,7 +18,7 @@ class DatabaseHelper {
     String path = join(await getDatabasesPath(), dbName);
     return await openDatabase(
       path,
-      version: 3,
+      version: 4,
       onCreate: _onCreate,
     );
   }
@@ -53,7 +53,7 @@ class DatabaseHelper {
     ''');
     
     await db.execute('''
-      CREATE TABLE IF NOT EXISTS testTable (
+      CREATE TABLE IF NOT EXISTS testAnswerTable (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         testId INTEGER,
         lessonId INTEGER,
