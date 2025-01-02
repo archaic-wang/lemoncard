@@ -1,76 +1,24 @@
 import 'package:flutter/material.dart';
 import '../models/question.dart';
-import '../models/testAnswer.dart';
 import '../storage/questionTable.dart';
-import '../storage/testAnswerTable.dart';
 
-class TestLemonCard extends StatefulWidget {
+class TestLemonCard extends StatelessWidget {
   final Question question;
   final QuestionTable questionTable;
   final int testId;
+  final Function(Question) onMarkCorrect;
+  final Function(Question) onMarkWrong;
+  final bool isAnswered;
+
   const TestLemonCard({
     super.key,
     required this.question,
     required this.questionTable,
     required this.testId,
+    required this.onMarkCorrect,
+    required this.onMarkWrong,
+    required this.isAnswered,
   });
-
-  @override
-  State<TestLemonCard> createState() => _TestLemonCardState();
-}
-
-class _TestLemonCardState extends State<TestLemonCard> {
-  bool _showNotAnswer = true;  // Show [not answer] initially
-
-  Future<void> _markCorrect() async {
-    final testAnswerTable = TestAnswerTable();
-    await testAnswerTable.insertTestAnswer(
-      TestAnswer(
-        testId: widget.testId,
-        lessonId: widget.question.lessonId,
-        questionId: widget.question.id,
-        answerCorrectly: true,
-        datetime: DateTime.now(),
-      ),
-    );
-    final updatedQuestion = Question(
-      id: widget.question.id,
-      lessonId: widget.question.lessonId,
-      question: widget.question.question,
-      answer: widget.question.answer,
-      nCorrect: widget.question.nCorrect + 1,
-      nWrong: widget.question.nWrong,
-    );
-    await widget.questionTable.updateQuestion(updatedQuestion);
-    setState(() {
-      _showNotAnswer = false;
-    });
-  }
-
-  Future<void> _markWrong() async {
-    final testAnswerTable = TestAnswerTable();
-    await testAnswerTable.insertTestAnswer(
-      TestAnswer(
-        testId: widget.testId,
-        lessonId: widget.question.lessonId,
-        questionId: widget.question.id,
-        answerCorrectly: false,
-        datetime: DateTime.now(),
-      ),
-    );
-    final updatedQuestion = Question(
-      id: widget.question.id,
-      lessonId: widget.question.lessonId,
-      question: widget.question.question,
-      answer: widget.question.answer,
-      nCorrect: widget.question.nCorrect,
-      nWrong: widget.question.nWrong + 1,
-    );
-    await widget.questionTable.updateQuestion(updatedQuestion);
-    setState(() {
-      _showNotAnswer = false;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,14 +30,14 @@ class _TestLemonCardState extends State<TestLemonCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.question.question,
+              question.question,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8.0),
             Container(
               height: 48.0,
               alignment: Alignment.bottomLeft,
-              child: _showNotAnswer
+              child: !isAnswered
                   ? const Text(
                       'not answer',
                       style: TextStyle(fontSize: 16.0),
@@ -104,12 +52,12 @@ class _TestLemonCardState extends State<TestLemonCard> {
                 Row(
                   children: [
                     Text(
-                      'Correct: ${widget.question.nCorrect}',
+                      'Correct: ${question.nCorrect}',
                       style: const TextStyle(color: Colors.green),
                     ),
                     const SizedBox(width: 16),
                     Text(
-                      'Wrong: ${widget.question.nWrong}',
+                      'Wrong: ${question.nWrong}',
                       style: const TextStyle(color: Colors.red),
                     ),
                   ],
@@ -120,13 +68,13 @@ class _TestLemonCardState extends State<TestLemonCard> {
                     IconButton(
                       icon: const Icon(Icons.check_circle_outline),
                       color: Colors.green,
-                      onPressed: _markCorrect,
+                      onPressed: isAnswered ? null : () => onMarkCorrect(question),
                       tooltip: 'Mark as correct',
                     ),
                     IconButton(
                       icon: const Icon(Icons.cancel_outlined),
                       color: Colors.red,
-                      onPressed: _markWrong,
+                      onPressed: isAnswered ? null : () => onMarkWrong(question),
                       tooltip: 'Mark as wrong',
                     ),
                   ],

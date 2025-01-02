@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../constants/config.dart';
 import '../models/question.dart';
+import '../models/testAnswer.dart';
 import '../storage/questionTable.dart';
 import '../storage/testAnswerTable.dart';
 import '../widgets/testLemonCardList.dart';
@@ -18,6 +19,7 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
   List<Question> _testQuestions = [];
   bool _isLoading = true;
   int _testId = 0;
+  final Map<int, bool> _answeredMap = {};
 
   @override
   void initState() {
@@ -62,6 +64,54 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
     return result ?? false;
   }
 
+  Future<void> _markCorrect(Question question) async {
+    final testAnswerTable = TestAnswerTable();
+    final testAnswer = TestAnswer(
+      testId: _testId,
+      lessonId: question.lessonId,
+      questionId: question.id,
+      answerCorrectly: true,
+      datetime: DateTime.now(),
+    );
+    await testAnswerTable.insertTestAnswer(testAnswer);
+    final updatedQuestion = Question(
+      id: question.id,
+      lessonId: question.lessonId,
+      question: question.question,
+      answer: question.answer,
+      nCorrect: question.nCorrect + 1,
+      nWrong: question.nWrong,
+    );
+    await _questionTable.updateQuestion(updatedQuestion);
+    setState(() {
+      _answeredMap[question.id] = true;
+    });
+  }
+
+  Future<void> _markWrong(Question question) async {
+    final testAnswerTable = TestAnswerTable();
+    final testAnswer = TestAnswer(
+      testId: _testId,
+      lessonId: question.lessonId,
+      questionId: question.id,
+      answerCorrectly: false,
+      datetime: DateTime.now(),
+    );
+    await testAnswerTable.insertTestAnswer(testAnswer);
+    final updatedQuestion = Question(
+      id: question.id,
+      lessonId: question.lessonId,
+      question: question.question,
+      answer: question.answer,
+      nCorrect: question.nCorrect,
+      nWrong: question.nWrong + 1,
+    );
+    await _questionTable.updateQuestion(updatedQuestion);
+    setState(() {
+      _answeredMap[question.id] = true;
+    });
+  }
+
   Future<void> _loadQuestions() async {
     final testAnswerTable = TestAnswerTable();
     final wrongQuestionIds = await testAnswerTable.getLastTimeWrongQuestionIds(widget.lessonId);
@@ -98,6 +148,9 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
                     questions: _testQuestions,
                     questionTable: _questionTable,
                     testId: _testId,
+                    onMarkCorrect: _markCorrect,
+                    onMarkWrong: _markWrong,
+                    answeredMap: _answeredMap,
                   ),
                 ),
                 Padding(
