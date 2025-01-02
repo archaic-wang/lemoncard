@@ -114,9 +114,9 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
 
   Future<void> _loadQuestions() async {
     final testAnswerTable = TestAnswerTable();
-    final wrongQuestionIds = await testAnswerTable.getLastTimeWrongQuestionIds(widget.lessonId);
+    final priorityQuestionIds = await testAnswerTable.getPriorityQuestionIds(widget.lessonId);
     
-    if (wrongQuestionIds.isEmpty) {
+    if (priorityQuestionIds.isEmpty) {
       final shouldLoadRandom = await _showRandomQuestionDialog();
       if (shouldLoadRandom) {
         await _loadRandomQuestions();
@@ -124,10 +124,9 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
         Navigator.pop(context);
       }
     } else {
-      final questions = await _questionTable.getQuestionsByIds(wrongQuestionIds);
-      questions.shuffle(); // Randomize order of wrong questions
+      final questions = await _questionTable.getQuestionsByIds(priorityQuestionIds);
       setState(() {
-        _testQuestions = questions.take(LemonCardConfig.TEST_QUESTION_COUNT).toList();
+        _testQuestions = questions;  // No need to shuffle or take, already done in getPriorityQuestionIds
         _isLoading = false;
       });
     }

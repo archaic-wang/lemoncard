@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import '../models/testAnswer.dart';
 import './localDBHelper.dart';
+import '../constants/config.dart';
 
 class TestAnswerTable {
   final _dbHelper = DatabaseHelper();
@@ -64,5 +65,34 @@ class TestAnswerTable {
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+  }
+
+  Future<List<int>> getPriorityQuestionIds(int lessonId) async {
+    final db = await _dbHelper.database;
+    final List<Map<String, dynamic>> maps = await db.rawQuery('''
+      SELECT q.id as questionId
+      FROM questions q
+      LEFT JOIN testAnswer ta ON q.id = ta.questionId
+      WHERE q.lessonId = ?
+        AND (
+          ta.questionId IS NULL
+          OR q.id IN (
+            SELECT questionId 
+            FROM testAnswer 
+            WHERE lessonId = ?
+            GROUP BY questionId 
+            HAVING MAX(datetime) = (
+              SELECT MAX(datetime) 
+              FROM testAnswer t2 
+              WHERE t2.questionId = testAnswer.questionId
+            ) 
+            AND answerCorrectly = 0
+          )
+        )
+      ORDER BY RANDOM()
+      LIMIT ?
+    ''', [lessonId, lessonId, LemonCardConfig.TEST_QUESTION_COUNT]);
+
+    return maps.map((map) => map['questionId'] as int).toList();
   }
 }
