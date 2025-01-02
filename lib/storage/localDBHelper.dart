@@ -24,25 +24,7 @@ class DatabaseHelper {
         if (oldVersion < 4) {
           await db.execute('DROP TABLE IF EXISTS testTable');
           await db.execute('''
-            CREATE TABLE IF NOT EXISTS testAnswerTable (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              testId INTEGER,
-              lessonId INTEGER,
-              questionId INTEGER,
-              datetime TIMESTAMP,
-              answer_correctly INTEGER,
-              FOREIGN KEY (lessonId) REFERENCES lessons (id),
-              FOREIGN KEY (questionId) REFERENCES questions (question_id)
-            )
-          ''');
-        }
-        if (oldVersion < 5) {
-          // Rename columns in testAnswerTable
-          await db.execute('''
-            ALTER TABLE testAnswerTable RENAME TO old_testAnswerTable;
-          ''');
-          await db.execute('''
-            CREATE TABLE testAnswerTable (
+            CREATE TABLE IF NOT EXISTS testAnswer (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               testId INTEGER,
               lessonId INTEGER,
@@ -50,43 +32,12 @@ class DatabaseHelper {
               datetime TIMESTAMP,
               answerCorrectly INTEGER,
               FOREIGN KEY (lessonId) REFERENCES lessons (id),
-              FOREIGN KEY (questionId) REFERENCES questions (question_id)
-            );
-          ''');
-          await db.execute('''
-            INSERT INTO testAnswerTable (
-              id, testId, lessonId, questionId, datetime, answerCorrectly
+              FOREIGN KEY (questionId) REFERENCES questions (id)
             )
-            SELECT
-              id, testId, lessonId, questionId, datetime, answer_correctly
-            FROM old_testAnswerTable;
           ''');
-          await db.execute('DROP TABLE old_testAnswerTable');
-
-          // Rename columns in questions table
-          await db.execute('''
-            ALTER TABLE questions RENAME TO old_questions;
-          ''');
-          await db.execute('''
-            CREATE TABLE questions (
-              id INTEGER PRIMARY KEY,
-              lessonId INTEGER,
-              question TEXT,
-              answer TEXT,
-              nCorrect INTEGER DEFAULT 0,
-              nWrong INTEGER DEFAULT 0,
-              FOREIGN KEY (lessonId) REFERENCES lessons(id) ON DELETE CASCADE
-            );
-          ''');
-          await db.execute('''
-            INSERT INTO questions (
-              id, lessonId, question, answer, nCorrect, nWrong
-            )
-            SELECT
-              question_id, lesson_id, question, answer, n_correct, n_wrong
-            FROM old_questions;
-          ''');
-          await db.execute('DROP TABLE old_questions');
+        }
+        if (oldVersion < 5) {
+          // No upgrade logic as per user request
         }
       },
     );
@@ -122,15 +73,15 @@ class DatabaseHelper {
     ''');
     
     await db.execute('''
-      CREATE TABLE IF NOT EXISTS testAnswerTable (
+      CREATE TABLE IF NOT EXISTS testAnswer (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         testId INTEGER,
         lessonId INTEGER,
         questionId INTEGER,
         datetime TIMESTAMP,
-        answer_correctly INTEGER,
+        answerCorrectly INTEGER,
         FOREIGN KEY (lessonId) REFERENCES lessons (id),
-        FOREIGN KEY (questionId) REFERENCES questions (question_id)
+        FOREIGN KEY (questionId) REFERENCES questions (id)
       )
     ''');
   }
