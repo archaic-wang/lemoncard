@@ -18,7 +18,7 @@ class DatabaseHelper {
     String path = join(await getDatabasesPath(), dbName);
     return await openDatabase(
       path,
-      version: 2,
+      version: 3,
       onCreate: _onCreate,
     );
   }
@@ -58,7 +58,7 @@ class DatabaseHelper {
         testId INTEGER,
         lessonId INTEGER,
         questionId INTEGER,
-        datetime TEXT,
+        datetime TIMESTAMP,
         answer_correctly INTEGER,
         FOREIGN KEY (lessonId) REFERENCES lessons (id),
         FOREIGN KEY (questionId) REFERENCES questions (question_id)
