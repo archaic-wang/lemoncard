@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/question.dart';
+import '../models/testRecord.dart';
 import '../storage/questionTable.dart';
 import '../storage/testTable.dart';
 
@@ -25,11 +26,14 @@ class _TestLemonCardState extends State<TestLemonCard> {
   Future<void> _markCorrect() async {
     final testTable = TestTable();
     await testTable.insertTestRecord(
-      testId: widget.testId,
-      lessonId: widget.question.lessonId,
-      questionId: widget.question.questionId,
-      answerCorrectly: true,
-      dateTime: DateTime.now(),
+      TestRecord(
+        id: 0, // SQLite will auto-increment this
+        testId: widget.testId,
+        lessonId: widget.question.lessonId,
+        questionId: widget.question.questionId,
+        answerCorrectly: true,
+        datetime: DateTime.now(),
+      ),
     );
     widget.onHide?.call();
   }
@@ -37,11 +41,14 @@ class _TestLemonCardState extends State<TestLemonCard> {
   Future<void> _markWrong() async {
     final testTable = TestTable();
     await testTable.insertTestRecord(
-      testId: widget.testId,
-      lessonId: widget.question.lessonId,
-      questionId: widget.question.questionId,
-      answerCorrectly: false,
-      dateTime: DateTime.now(),
+      TestRecord(
+        id: 0, // SQLite will auto-increment this
+        testId: widget.testId,
+        lessonId: widget.question.lessonId,
+        questionId: widget.question.questionId,
+        answerCorrectly: false,
+        datetime: DateTime.now(),
+      ),
     );
     widget.onHide?.call();
   }
