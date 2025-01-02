@@ -100,6 +100,11 @@ class _LemonCardState extends State<LemonCard> {
                           _latestAnswer!.answerCorrectly ? 'Correct' : 'Wrong',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
+                      ] else ...[
+                        Text(
+                          'not answered yet',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                       ],
                       IconButton(
                         icon: const Icon(Icons.edit),
