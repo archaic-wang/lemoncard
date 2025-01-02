@@ -19,7 +19,7 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
   List<Question> _testQuestions = [];
   bool _isLoading = true;
   int _testId = 0;
-  final Map<int, bool> _answeredMap = {};
+  final Map<int, String> _answerSelectionMap = {}; // Values: "correct", "wrong", "none"
 
   @override
   void initState() {
@@ -65,6 +65,7 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
   }
 
   Future<void> _markCorrect(Question question) async {
+    final oldState = _answerSelectionMap[question.id] ?? "none";
     final testAnswerTable = TestAnswerTable();
     final testAnswer = TestAnswer(
       testId: _testId,
@@ -74,13 +75,25 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
       datetime: DateTime.now(),
     );
     await testAnswerTable.insertTestAnswer(testAnswer);
+
+    int newNCorrect = question.nCorrect;
+    int newNWrong = question.nWrong;
+
+    if (oldState == "wrong") {
+      newNCorrect += 1;
+      newNWrong -= 1;
+    } else if (oldState == "none") {
+      newNCorrect += 1;
+    }
+    // If oldState was "correct", do nothing with counters
+
     final updatedQuestion = Question(
       id: question.id,
       lessonId: question.lessonId,
       question: question.question,
       answer: question.answer,
-      nCorrect: question.nCorrect + 1,
-      nWrong: question.nWrong,
+      nCorrect: newNCorrect,
+      nWrong: newNWrong,
     );
     await _questionTable.updateQuestion(updatedQuestion);
     setState(() {
@@ -89,11 +102,12 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
       if (idx != -1) {
         _testQuestions[idx] = updatedQuestion;
       }
-      _answeredMap[question.id] = true;
+      _answerSelectionMap[question.id] = "correct";
     });
   }
 
   Future<void> _markWrong(Question question) async {
+    final oldState = _answerSelectionMap[question.id] ?? "none";
     final testAnswerTable = TestAnswerTable();
     final testAnswer = TestAnswer(
       testId: _testId,
@@ -103,13 +117,25 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
       datetime: DateTime.now(),
     );
     await testAnswerTable.insertTestAnswer(testAnswer);
+
+    int newNCorrect = question.nCorrect;
+    int newNWrong = question.nWrong;
+
+    if (oldState == "correct") {
+      newNCorrect -= 1;
+      newNWrong += 1;
+    } else if (oldState == "none") {
+      newNWrong += 1;
+    }
+    // If oldState was "wrong", do nothing with counters
+
     final updatedQuestion = Question(
       id: question.id,
       lessonId: question.lessonId,
       question: question.question,
       answer: question.answer,
-      nCorrect: question.nCorrect,
-      nWrong: question.nWrong + 1,
+      nCorrect: newNCorrect,
+      nWrong: newNWrong,
     );
     await _questionTable.updateQuestion(updatedQuestion);
     setState(() {
@@ -118,7 +144,7 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
       if (idx != -1) {
         _testQuestions[idx] = updatedQuestion;
       }
-      _answeredMap[question.id] = true;
+      _answerSelectionMap[question.id] = "wrong";
     });
   }
 
@@ -159,7 +185,7 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
                     testId: _testId,
                     onMarkCorrect: _markCorrect,
                     onMarkWrong: _markWrong,
-                    answeredMap: _answeredMap,
+                    answerSelectionMap: _answerSelectionMap,
                   ),
                 ),
                 Padding(

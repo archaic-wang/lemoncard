@@ -9,7 +9,7 @@ class TestLemonCardList extends StatelessWidget {
   final int testId;
   final Function(Question) onMarkCorrect;
   final Function(Question) onMarkWrong;
-  final Map<int, bool> answeredMap;
+  final Map<int, String> answerSelectionMap;
 
   const TestLemonCardList({
     super.key,
@@ -18,7 +18,7 @@ class TestLemonCardList extends StatelessWidget {
     required this.testId,
     required this.onMarkCorrect,
     required this.onMarkWrong,
-    required this.answeredMap,
+    required this.answerSelectionMap,
   });
 
   @override
@@ -34,7 +34,7 @@ class TestLemonCardList extends StatelessWidget {
           testId: testId,
           onMarkCorrect: (q) => onMarkCorrect(q),
           onMarkWrong: (q) => onMarkWrong(q),
-          isAnswered: answeredMap[question.id] ?? false,
+          selectedState: answerSelectionMap[question.id] ?? "none",
         );
       },
     );

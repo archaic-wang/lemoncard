@@ -8,7 +8,7 @@ class TestLemonCard extends StatelessWidget {
   final int testId;
   final Function(Question) onMarkCorrect;
   final Function(Question) onMarkWrong;
-  final bool isAnswered;
+  final String selectedState; // "correct", "wrong", or "none"
 
   const TestLemonCard({
     super.key,
@@ -17,7 +17,7 @@ class TestLemonCard extends StatelessWidget {
     required this.testId,
     required this.onMarkCorrect,
     required this.onMarkWrong,
-    required this.isAnswered,
+    required this.selectedState,
   });
 
   @override
@@ -37,12 +37,18 @@ class TestLemonCard extends StatelessWidget {
             Container(
               height: 48.0,
               alignment: Alignment.bottomLeft,
-              child: !isAnswered
+              child: selectedState == "none"
                   ? const Text(
-                      'not answer',
+                      'not answered',
                       style: TextStyle(fontSize: 16.0),
                     )
-                  : const SizedBox.shrink(),
+                  : Text(
+                      selectedState == "correct" ? "Answered correctly" : "Answered incorrectly",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: selectedState == "correct" ? Colors.green : Colors.red,
+                      ),
+                    ),
             ),
             const SizedBox(height: 8.0),
             Row(
@@ -66,15 +72,15 @@ class TestLemonCard extends StatelessWidget {
                 Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.check_circle_outline),
-                      color: Colors.green,
-                      onPressed: isAnswered ? null : () => onMarkCorrect(question),
+                      icon: Icon(Icons.check_circle_outline),
+                      color: selectedState == "correct" ? Colors.green : Colors.grey,
+                      onPressed: selectedState != "correct" ? () => onMarkCorrect(question) : null,
                       tooltip: 'Mark as correct',
                     ),
                     IconButton(
-                      icon: const Icon(Icons.cancel_outlined),
-                      color: Colors.red,
-                      onPressed: isAnswered ? null : () => onMarkWrong(question),
+                      icon: Icon(Icons.cancel_outlined),
+                      color: selectedState == "wrong" ? Colors.red : Colors.grey,
+                      onPressed: selectedState != "wrong" ? () => onMarkWrong(question) : null,
                       tooltip: 'Mark as wrong',
                     ),
                   ],
