@@ -28,13 +28,7 @@ class TestLemonCardList extends StatelessWidget {
               question: question,
               questionTable: questionTable,
               testId: testId,
-              onHide: () {
-                setState(() {
-                  if (index >= 0 && index < questions.length) {
-                    questions.removeAt(index);
-                  }
-                });
-              },
+
             );
           },
         );

@@ -8,14 +8,11 @@ class TestLemonCard extends StatefulWidget {
   final Question question;
   final QuestionTable questionTable;
   final int testId;
-  final VoidCallback? onHide;
-
   const TestLemonCard({
     super.key,
     required this.question,
     required this.questionTable,
     required this.testId,
-    this.onHide,
   });
 
   @override
@@ -23,6 +20,8 @@ class TestLemonCard extends StatefulWidget {
 }
 
 class _TestLemonCardState extends State<TestLemonCard> {
+  bool _showNotAnswer = true;  // Show [not answer] initially
+
   Future<void> _markCorrect() async {
     final testAnswerTable = TestAnswerTable();
     await testAnswerTable.insertTestAnswer(
@@ -34,7 +33,9 @@ class _TestLemonCardState extends State<TestLemonCard> {
         datetime: DateTime.now(),
       ),
     );
-    widget.onHide?.call();
+    setState(() {
+      _showNotAnswer = false;
+    });
   }
 
   Future<void> _markWrong() async {
@@ -48,7 +49,9 @@ class _TestLemonCardState extends State<TestLemonCard> {
         datetime: DateTime.now(),
       ),
     );
-    widget.onHide?.call();
+    setState(() {
+      _showNotAnswer = false;
+    });
   }
 
   @override
@@ -67,6 +70,12 @@ class _TestLemonCardState extends State<TestLemonCard> {
             const SizedBox(height: 8.0),
             Container(
               height: 48.0,
+              child: _showNotAnswer
+                  ? const Text(
+                      '[not answer]',
+                      style: TextStyle(fontSize: 16.0),
+                    )
+                  : const SizedBox.shrink(),
             ),
             const SizedBox(height: 8.0),
             Row(
