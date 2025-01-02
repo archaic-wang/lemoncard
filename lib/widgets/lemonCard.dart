@@ -20,6 +20,17 @@ class LemonCard extends StatefulWidget {
 class _LemonCardState extends State<LemonCard> {
   TestAnswer? _latestAnswer;
 
+  String _formatDateTime(DateTime dateTime) {
+    final local = dateTime.toLocal();
+    final year = local.year.toString().padLeft(4, '0');
+    final month = local.month.toString().padLeft(2, '0');
+    final day = local.day.toString().padLeft(2, '0');
+    final hour = local.hour.toString().padLeft(2, '0');
+    final minute = local.minute.toString().padLeft(2, '0');
+    final second = local.second.toString().padLeft(2, '0');
+    return '$year-$month-$day $hour:$minute:$second';
+  }
+
   @override
   void initState() {
     super.initState();
@@ -100,7 +111,7 @@ class _LemonCardState extends State<LemonCard> {
                   const SizedBox(height: 8.0),
                   if (_latestAnswer != null) ...[
                     Text(
-                      'Last test: ${_latestAnswer!.datetime.toLocal()}',
+                      'Last test: ${_formatDateTime(_latestAnswer!.datetime)}',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     Text(
