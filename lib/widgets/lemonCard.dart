@@ -66,52 +66,52 @@ class _LemonCardState extends State<LemonCard> {
                 ),
               ),
               const SizedBox(height: 8.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(
-                        Icons.check_circle,
-                        color: Colors.green,
-                        size: 16.0,
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.check_circle,
+                            color: Colors.green,
+                            size: 16.0,
+                          ),
+                          const SizedBox(width: 4.0),
+                          Text('${widget.question.nCorrect} correct'),
+                          const SizedBox(width: 16.0),
+                          Icon(
+                            Icons.cancel,
+                            color: Colors.red,
+                            size: 16.0,
+                          ),
+                          const SizedBox(width: 4.0),
+                          Text('${widget.question.nWrong} wrong'),
+                        ],
                       ),
-                      const SizedBox(width: 4.0),
-                      Text('${widget.question.nCorrect} correct'),
-                      const SizedBox(width: 16.0),
-                      Icon(
-                        Icons.cancel,
-                        color: Colors.red,
-                        size: 16.0,
-                      ),
-                      const SizedBox(width: 4.0),
-                      Text('${widget.question.nWrong} wrong'),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      if (_latestAnswer != null) ...[
-                        Text(
-                          'Last test: ${_latestAnswer!.datetime.toLocal()}',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        Text(
-                          _latestAnswer!.answerCorrectly ? 'Correct' : 'Wrong',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ] else ...[
-                        Text(
-                          'not answered yet',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ],
                       IconButton(
                         icon: const Icon(Icons.edit),
                         onPressed: widget.onTap,
                       ),
                     ],
                   ),
+                  const SizedBox(height: 8.0),
+                  if (_latestAnswer != null) ...[
+                    Text(
+                      'Last test: ${_latestAnswer!.datetime.toLocal()}',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    Text(
+                      _latestAnswer!.answerCorrectly ? 'Correct' : 'Wrong',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ] else
+                    Text(
+                      'not answered yet',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                 ],
               ),
             ],
