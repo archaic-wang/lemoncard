@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import '../constants/config.dart';
 import '../models/question.dart';
 import '../storage/questionTable.dart';
-import '../widgets/testLemonCard.dart';
+import '../widgets/testLemonCardList.dart';
 
-class TestPage extends StatefulWidget {
-  const TestPage({super.key});
+class TestLemonTreePage extends StatefulWidget {
+  const TestLemonTreePage({super.key});
 
   @override
-  State<TestPage> createState() => _TestPageState();
+  State<TestLemonTreePage> createState() => _TestLemonTreePageState();
 }
 
-class _TestPageState extends State<TestPage> {
+class _TestLemonTreePageState extends State<TestLemonTreePage> {
   final QuestionTable _questionTable = QuestionTable();
   List<Question> _testQuestions = [];
   bool _isLoading = true;
@@ -35,21 +35,16 @@ class _TestPageState extends State<TestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Test Questions'),
+        title: const Text('Test Lemon Tree'),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Column(
               children: [
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: _testQuestions.length,
-                    itemBuilder: (context, index) {
-                      return TestLemonCard(
-                        question: _testQuestions[index],
-                        questionTable: _questionTable,
-                      );
-                    },
+                  child: TestLemonCardList(
+                    questions: _testQuestions,
+                    questionTable: _questionTable,
                   ),
                 ),
                 Padding(

@@ -4,7 +4,7 @@ import '../models/question.dart';
 import '../storage/questionTable.dart';
 import '../widgets/lemonCardList.dart';
 import 'lemonCardDetailPage.dart';
-import 'testPage.dart';
+import 'testLemonTreePage.dart';
 
 class LemonTreePage extends StatefulWidget {
   final Lesson lesson;
@@ -76,7 +76,7 @@ class _LemonTreePageState extends State<LemonTreePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const TestPage(),
+                    builder: (context) => const TestLemonTreePage(),
                   ),
                 );
               },
