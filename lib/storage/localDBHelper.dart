@@ -18,8 +18,11 @@ class DatabaseHelper {
     String path = join(await getDatabasesPath(), dbName);
     return await openDatabase(
       path,
-      version: 1,
+      version: 5,
       onCreate: _onCreate,
+      onUpgrade: (db, oldVersion, newVersion) async {
+
+      },
     );
   }
 
@@ -38,6 +41,30 @@ class DatabaseHelper {
         description TEXT,
         studentId INTEGER,
         FOREIGN KEY (studentId) REFERENCES students (id) ON DELETE CASCADE
+      )
+    ''');
+    await db.execute('''
+      CREATE TABLE questions (
+        id INTEGER PRIMARY KEY,
+        lessonId INTEGER,
+        question TEXT,
+        answer TEXT,
+        nCorrect INTEGER DEFAULT 0,
+        nWrong INTEGER DEFAULT 0,
+        FOREIGN KEY (lessonId) REFERENCES lessons (id) ON DELETE CASCADE
+      )
+    ''');
+    
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS testAnswer (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        testId INTEGER,
+        lessonId INTEGER,
+        questionId INTEGER,
+        datetime TIMESTAMP,
+        answerCorrectly INTEGER,
+        FOREIGN KEY (lessonId) REFERENCES lessons (id),
+        FOREIGN KEY (questionId) REFERENCES questions (id)
       )
     ''');
   }
