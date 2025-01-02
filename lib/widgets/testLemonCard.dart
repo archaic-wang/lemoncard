@@ -17,8 +17,6 @@ class TestLemonCard extends StatefulWidget {
 }
 
 class _TestLemonCardState extends State<TestLemonCard> {
-  bool _showAnswer = false;
-
   Future<void> _markCorrect() async {
     await widget.questionTable.updateQuestion(
       Question(
@@ -61,12 +59,10 @@ class _TestLemonCardState extends State<TestLemonCard> {
             const SizedBox(height: 8.0),
             Container(
               height: 48.0,
-              child: _showAnswer
-                  ? Text(
-                      widget.question.answer,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    )
-                  : const SizedBox.shrink(),
+              child: Text(
+                widget.question.answer,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
             ),
             const SizedBox(height: 8.0),
             Row(
@@ -84,15 +80,7 @@ class _TestLemonCardState extends State<TestLemonCard> {
                   onPressed: _markWrong,
                   tooltip: 'Mark as wrong',
                 ),
-                IconButton(
-                  icon: Icon(_showAnswer ? Icons.visibility_off : Icons.visibility),
-                  onPressed: () {
-                    setState(() {
-                      _showAnswer = !_showAnswer;
-                    });
-                  },
-                  tooltip: _showAnswer ? 'Hide answer' : 'Show answer',
-                ),
+
               ],
             ),
           ],
