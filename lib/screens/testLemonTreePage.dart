@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../constants/config.dart';
 import '../models/question.dart';
 import '../storage/questionTable.dart';
-import '../storage/testAnswerTable.dart';
+import '../storage/testAnswer.dart';
 import '../widgets/testLemonCardList.dart';
 
 class TestLemonTreePage extends StatefulWidget {
@@ -64,7 +64,7 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
 
   Future<void> _loadQuestions() async {
     final testAnswerTable = TestAnswerTable();
-    final wrongQuestionIds = await testAnswerTable.getLastTimeWrongQuestionIds();
+    final wrongQuestionIds = await testAnswerTable.getLastTimeWrongQuestionIds(widget.lessonId);
     
     if (wrongQuestionIds.isEmpty) {
       final shouldLoadRandom = await _showRandomQuestionDialog();
