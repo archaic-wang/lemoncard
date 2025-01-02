@@ -56,15 +56,23 @@ class TestLemonCard extends StatelessWidget {
                 Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.check_circle_outline),
+                      icon: const Icon(Icons.check_circle_outline),
                       color: selectedState == "correct" ? Colors.green : Colors.grey,
-                      onPressed: selectedState != "correct" ? () => onMarkCorrect(question) : null,
+                      onPressed: () {
+                        if (selectedState != "correct") {
+                          onMarkCorrect(question);
+                        }
+                      },
                       tooltip: 'Mark as correct',
                     ),
                     IconButton(
-                      icon: Icon(Icons.cancel_outlined),
+                      icon: const Icon(Icons.cancel_outlined),
                       color: selectedState == "wrong" ? Colors.red : Colors.grey,
-                      onPressed: selectedState != "wrong" ? () => onMarkWrong(question) : null,
+                      onPressed: () {
+                        if (selectedState != "wrong") {
+                          onMarkWrong(question);
+                        }
+                      },
                       tooltip: 'Mark as wrong',
                     ),
                   ],
