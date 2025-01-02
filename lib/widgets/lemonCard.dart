@@ -1,59 +1,19 @@
 import 'package:flutter/material.dart';
 import '../models/question.dart';
 import '../models/testAnswer.dart';
-import '../storage/testAnswerTable.dart';
+import '../utils/datetime.dart';
 
-class LemonCard extends StatefulWidget {
+class LemonCard extends StatelessWidget {
   final Question question;
   final VoidCallback onTap;
+  final TestAnswer? latestAnswer;
   
   const LemonCard({
     super.key, 
-    required this.question, 
+    required this.question,
     required this.onTap,
+    required this.latestAnswer,
   });
-
-  @override
-  State<LemonCard> createState() => _LemonCardState();
-}
-
-class _LemonCardState extends State<LemonCard> {
-  TestAnswer? _latestAnswer;
-
-  String _formatDateTime(DateTime dateTime) {
-    final local = dateTime.toLocal();
-    final year = local.year.toString().padLeft(4, '0');
-    final month = local.month.toString().padLeft(2, '0');
-    final day = local.day.toString().padLeft(2, '0');
-    final hour = local.hour.toString().padLeft(2, '0');
-    final minute = local.minute.toString().padLeft(2, '0');
-    final second = local.second.toString().padLeft(2, '0');
-    return '$year-$month-$day $hour:$minute:$second';
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _loadLatestAnswer();
-  }
-
-  void _loadLatestAnswer() async {
-    final testAnswerTable = TestAnswerTable();
-    final TestAnswer? result = await testAnswerTable.getLatestAnswer(widget.question.id);
-    setState(() {
-      if (result != null) {
-        _latestAnswer = TestAnswer(
-          testId: result.testId,
-          lessonId: result.lessonId,
-          questionId: result.questionId,
-          datetime: result.datetime,
-          answerCorrectly: result.answerCorrectly,
-        );
-      } else {
-        _latestAnswer = null;
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,14 +25,14 @@ class _LemonCardState extends State<LemonCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.question.question,
+                question.question,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 8.0),
               Container(
                 height: 48.0,
                 child: Text(
-                  widget.question.answer,
+                  question.answer,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
@@ -91,7 +51,7 @@ class _LemonCardState extends State<LemonCard> {
                             size: 16.0,
                           ),
                           const SizedBox(width: 4.0),
-                          Text('${widget.question.nCorrect} correct'),
+                          Text('${question.nCorrect} correct'),
                           const SizedBox(width: 16.0),
                           Icon(
                             Icons.cancel,
@@ -99,23 +59,23 @@ class _LemonCardState extends State<LemonCard> {
                             size: 16.0,
                           ),
                           const SizedBox(width: 4.0),
-                          Text('${widget.question.nWrong} wrong'),
+                          Text('${question.nWrong} wrong'),
                         ],
                       ),
                       IconButton(
                         icon: const Icon(Icons.edit),
-                        onPressed: widget.onTap,
+                        onPressed: onTap,
                       ),
                     ],
                   ),
                   const SizedBox(height: 8.0),
-                  if (_latestAnswer != null) ...[
+                  if (latestAnswer != null) ...[
                     Text(
-                      'Last test: ${_formatDateTime(_latestAnswer!.datetime)}',
+                      'Last test: ${formatDateTime(latestAnswer!.datetime)}',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     Text(
-                      _latestAnswer!.answerCorrectly ? 'Correct' : 'Wrong',
+                      latestAnswer!.answerCorrectly ? 'Correct' : 'Wrong',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ] else

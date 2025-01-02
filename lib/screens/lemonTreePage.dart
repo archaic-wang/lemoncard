@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import '../models/lesson.dart';
 import '../models/question.dart';
+import '../models/testAnswer.dart';
 import '../storage/questionTable.dart';
+import '../storage/testAnswerTable.dart';
 import '../widgets/lemonCardList.dart';
 import 'lemonCardDetailPage.dart';
 import 'testLemonTreePage.dart';
@@ -18,11 +20,18 @@ class LemonTreePage extends StatefulWidget {
 class _LemonTreePageState extends State<LemonTreePage> {
   final QuestionTable _questionTable = QuestionTable();
   List<Question> questions = [];
+  Map<int, TestAnswer?> latestAnswers = {};
 
   @override
   void initState() {
     super.initState();
-    _loadQuestions();
+    _loadQuestions().then((_) {
+      _loadLatestAnswers().then((map) {
+        setState(() {
+          latestAnswers = map;
+        });
+      });
+    });
   }
 
   Future<void> _loadQuestions() async {
@@ -30,6 +39,16 @@ class _LemonTreePageState extends State<LemonTreePage> {
     setState(() {
       questions = data;
     });
+  }
+
+  Future<Map<int, TestAnswer?>> _loadLatestAnswers() async {
+    final testAnswerTable = TestAnswerTable();
+    final Map<int, TestAnswer?> resultMap = {};
+    for (final q in questions) {
+      final latest = await testAnswerTable.getLatestAnswer(q.id);
+      resultMap[q.id] = latest;
+    }
+    return resultMap;
   }
 
   Future<void> _navigateToQuestionDetail({Question? question}) async {
@@ -58,6 +77,7 @@ class _LemonTreePageState extends State<LemonTreePage> {
       body: LemonCardList(
         questions: questions,
         onItemTap: (q) => _navigateToQuestionDetail(question: q),
+        latestAnswers: latestAnswers,
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(left: 30),
