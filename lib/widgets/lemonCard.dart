@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/question.dart';
 import '../models/testAnswer.dart';
-import '../storage/testAnswer.dart';
+import '../storage/testAnswerTable.dart';
 
 class LemonCard extends StatefulWidget {
   final Question question;
@@ -28,15 +28,15 @@ class _LemonCardState extends State<LemonCard> {
 
   void _loadLatestAnswer() async {
     final testAnswerTable = TestAnswerTable();
-    final result = await testAnswerTable.getLatestAnswer(widget.question.id);
+    final TestAnswer? result = await testAnswerTable.getLatestAnswer(widget.question.id);
     setState(() {
       if (result != null) {
         _latestAnswer = TestAnswer(
-          testId: result['testId'] as int,
-          lessonId: result['lessonId'] as int,
-          questionId: result['questionId'] as int,
-          datetime: DateTime.parse(result['datetime'] as String),
-          answerCorrectly: (result['answerCorrectly'] as int) == 1,
+          testId: result.testId,
+          lessonId: result.lessonId,
+          questionId: result.questionId,
+          datetime: result.datetime,
+          answerCorrectly: result.answerCorrectly,
         );
       } else {
         _latestAnswer = null;

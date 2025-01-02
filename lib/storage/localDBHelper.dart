@@ -21,24 +21,7 @@ class DatabaseHelper {
       version: 5,
       onCreate: _onCreate,
       onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 4) {
-          await db.execute('DROP TABLE IF EXISTS testTable');
-          await db.execute('''
-            CREATE TABLE IF NOT EXISTS testAnswer (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              testId INTEGER,
-              lessonId INTEGER,
-              questionId INTEGER,
-              datetime TIMESTAMP,
-              answerCorrectly INTEGER,
-              FOREIGN KEY (lessonId) REFERENCES lessons (id),
-              FOREIGN KEY (questionId) REFERENCES questions (id)
-            )
-          ''');
-        }
-        if (oldVersion < 5) {
-          // No upgrade logic as per user request
-        }
+
       },
     );
   }
@@ -62,13 +45,13 @@ class DatabaseHelper {
     ''');
     await db.execute('''
       CREATE TABLE questions (
-        question_id INTEGER PRIMARY KEY,
-        lesson_id INTEGER,
+        id INTEGER PRIMARY KEY,
+        lessonId INTEGER,
         question TEXT,
         answer TEXT,
-        n_correct INTEGER DEFAULT 0,
-        n_wrong INTEGER DEFAULT 0,
-        FOREIGN KEY (lesson_id) REFERENCES lessons (id) ON DELETE CASCADE
+        nCorrect INTEGER DEFAULT 0,
+        nWrong INTEGER DEFAULT 0,
+        FOREIGN KEY (lessonId) REFERENCES lessons (id) ON DELETE CASCADE
       )
     ''');
     
