@@ -64,7 +64,7 @@ class _TestLemonTreePageState extends State<TestLemonTreePage> {
 
   Future<void> _loadQuestions() async {
     final testAnswerTable = TestAnswerTable();
-    final wrongQuestionIds = await testAnswerTable.getLastTimeWrongQuestionIds();
+    final wrongQuestionIds = await testAnswerTable.getLastTimeWrongQuestionIds(widget.lessonId);
     
     if (wrongQuestionIds.isEmpty) {
       final shouldLoadRandom = await _showRandomQuestionDialog();
