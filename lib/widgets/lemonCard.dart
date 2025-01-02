@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/question.dart';
+import '../models/testAnswer.dart';
+import '../storage/testAnswerTable.dart';
 
 class LemonCard extends StatefulWidget {
   final Question question;
@@ -16,7 +18,21 @@ class LemonCard extends StatefulWidget {
 }
 
 class _LemonCardState extends State<LemonCard> {
-  bool _showAnswer = false;
+  TestAnswer? _latestAnswer;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLatestAnswer();
+  }
+
+  void _loadLatestAnswer() async {
+    final testAnswerTable = TestAnswerTable();
+    final result = await testAnswerTable.getLatestAnswer(widget.question.questionId);
+    setState(() {
+      _latestAnswer = result;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +49,11 @@ class _LemonCardState extends State<LemonCard> {
               ),
               const SizedBox(height: 8.0),
               Container(
-                height: 48.0, // Estimated height for answer text
-                child: _showAnswer
-                    ? Text(
-                        widget.question.answer,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      )
-                    : const SizedBox.shrink(),
+                height: 48.0,
+                child: Text(
+                  widget.question.answer,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
               ),
               const SizedBox(height: 8.0),
               Row(
@@ -64,20 +78,22 @@ class _LemonCardState extends State<LemonCard> {
                       Text('${widget.question.nWrong} wrong'),
                     ],
                   ),
-                  Row(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
+                      if (_latestAnswer != null) ...[
+                        Text(
+                          'Last test: ${_latestAnswer!.datetime.toLocal()}',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        Text(
+                          _latestAnswer!.answerCorrectly ? 'Correct' : 'Wrong',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ],
                       IconButton(
                         icon: const Icon(Icons.edit),
                         onPressed: widget.onTap,
-                      ),
-                      const SizedBox(width: 8.0),
-                      IconButton(
-                        icon: Icon(_showAnswer ? Icons.visibility_off : Icons.visibility),
-                        onPressed: () {
-                          setState(() {
-                            _showAnswer = !_showAnswer;
-                          });
-                        },
                       ),
                     ],
                   ),

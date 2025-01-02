@@ -33,4 +33,20 @@ class TestAnswerTable {
       whereArgs: [id],
     );
   }
+
+  Future<TestAnswer?> getLatestAnswer(int questionId) async {
+    final db = await _dbHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'testAnswerTable',
+      where: 'questionId = ?',
+      whereArgs: [questionId],
+      orderBy: 'datetime DESC',
+      limit: 1
+    );
+    if (maps.isNotEmpty) {
+      return TestAnswer.fromMap(maps.first);
+    } else {
+      return null;
+    }
+  }
 }
