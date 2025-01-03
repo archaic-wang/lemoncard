@@ -93,14 +93,14 @@ class _LemonTreePageState extends State<LemonTreePage> {
               child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    icon: const Icon(Icons.arrow_back, color: Colors.deepPurple),
                     onPressed: () => Navigator.pop(context),
                   ),
                   Expanded(
                     child: Text(
                       'Lemon Tree: ${widget.lesson.name}',
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: Colors.deepPurple,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),

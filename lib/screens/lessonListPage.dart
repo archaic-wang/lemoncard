@@ -66,7 +66,7 @@ class _LessonListPageState extends State<LessonListPage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
-          color: Theme.of(context).primaryColor,
+          color: Colors.black,
           child: SafeArea(
             bottom: false,
             child: Padding(
@@ -76,10 +76,14 @@ class _LessonListPageState extends State<LessonListPage> {
                 children: [
                   Text(
                     'Lessons for ${widget.student.name}',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+                    style: TextStyle(
+                      color: Colors.deepPurple,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.add, color: Colors.white),
+                    icon: const Icon(Icons.add, color: Colors.deepPurple),
                     onPressed: _navigateToNewLesson,
                   ),
                 ],
