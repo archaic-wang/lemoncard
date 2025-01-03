@@ -63,8 +63,9 @@ class _UserDetailPageState extends State<UserDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Scaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
           color: Theme.of(context).primaryColor,
@@ -151,6 +152,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
             ),
           ),
         ),
+      ],
       ),
     );
   }
