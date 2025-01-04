@@ -85,64 +85,55 @@ class _LemonTreePageState extends State<LemonTreePage> {
         title: Text('Lemon Tree: ${widget.lesson.name}'),
         elevation: 2,
       ),
-      body: Stack(
-            children: [
-              LemonCardList(
-                questions: questions,
-                onItemTap: (q) => _navigateToQuestionDetail(question: q),
-                latestAnswers: latestAnswers,
-              ),
-              Positioned(
-                bottom: 16,
-                right: 16,
-                left: 16,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    FloatingActionButton(
-                      onPressed: () => _navigateToQuestionDetail(),
-                      child: const Icon(Icons.add),
-                      tooltip: 'Add new question',
-                      heroTag: 'add_question',
+      body: LemonCardList(
+        questions: questions,
+        onItemTap: (q) => _navigateToQuestionDetail(question: q),
+        latestAnswers: latestAnswers,
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(left: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              onPressed: () => _navigateToQuestionDetail(),
+              tooltip: 'Add new question',
+              heroTag: 'add_question',
+              child: const Icon(Icons.add),
+            ),
+            const SizedBox(width: 16),
+            FloatingActionButton(
+              onPressed: _resetAnswers,
+              tooltip: 'Reset answers',
+              heroTag: 'reset_answers',
+              child: const Icon(Icons.refresh),
+            ),
+            const SizedBox(width: 16),
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TestLemonTreePage(
+                      lessonId: widget.lesson.id,
                     ),
-                    const SizedBox(width: 16),
-                    FloatingActionButton(
-                      onPressed: _resetAnswers,
-                      child: const Icon(Icons.refresh),
-                      tooltip: 'Reset answers',
-                      heroTag: 'reset_answers',
-                    ),
-                    const SizedBox(width: 16),
-                    FloatingActionButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => TestLemonTreePage(
-                              lessonId: widget.lesson.id,
-                            ),
-                            fullscreenDialog: true,
-                          ),
-                        ).then((_) async {
-                          // after pop, refresh questions and latest answers
-                          await _loadQuestions();
-                          final map = await _loadLatestAnswers();
-                          setState(() {
-                            latestAnswers = map;
-                          });
-                        });
-                      },
-                      child: const Icon(Icons.play_arrow),
-                      tooltip: 'Test questions',
-                      heroTag: 'test_questions',
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+                    fullscreenDialog: true,
+                  ),
+                ).then((_) async {
+                  // after pop, refresh questions and latest answers
+                  await _loadQuestions();
+                  final map = await _loadLatestAnswers();
+                  setState(() {
+                    latestAnswers = map;
+                  });
+                });
+              },
+              tooltip: 'Test questions',
+              heroTag: 'test_questions',
+              child: const Icon(Icons.play_arrow),
+            ),
+          ],
         ),
-      ],
       ),
     );
   }

@@ -4,7 +4,7 @@ import '../models/lesson.dart';
 import '../storage/lessonTable.dart';
 import '../widgets/lessonList.dart';
 import 'lessonDetailPage.dart';
-import 'lemonTreePage.dart';
+import 'lemon_tree_page.dart';
 
 class LessonListPage extends StatefulWidget {
   final Student student;
@@ -73,20 +73,18 @@ class _LessonListPageState extends State<LessonListPage> {
         ],
       ),
       body: LessonList(
-            lessons: lessons,
-            onEdit: _navigateToEditLesson,
-            onItemTap: (lesson) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LemonTreePage(lesson: lesson),
-                  fullscreenDialog: true,
-                ),
-              );
-            },
-          ),
-        ),
-      ],
+        lessons: lessons,
+        onEdit: _navigateToEditLesson,
+        onItemTap: (lesson) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LemonTreePage(lesson: lesson),
+              fullscreenDialog: true,
+            ),
+          );
+        },
+      ),
     );
   }
 }
