@@ -4,7 +4,7 @@ import '../models/lesson.dart';
 import '../storage/lessonTable.dart';
 import '../widgets/lessonList.dart';
 import 'lessonDetailPage.dart';
-import 'lemonTreePage.dart';
+import 'lemon_tree_page.dart';
 
 class LessonListPage extends StatefulWidget {
   final Student student;
@@ -35,7 +35,10 @@ class _LessonListPageState extends State<LessonListPage> {
   Future<void> _navigateToNewLesson() async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => LessonDetailPage(studentId: widget.student.id)),
+      MaterialPageRoute(
+        builder: (context) => LessonDetailPage(studentId: widget.student.id),
+        fullscreenDialog: true,
+      ),
     );
 
     if (result == true) {
@@ -46,7 +49,10 @@ class _LessonListPageState extends State<LessonListPage> {
   Future<void> _navigateToEditLesson(Lesson lesson) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => LessonDetailPage(lesson: lesson, studentId: widget.student.id)),
+      MaterialPageRoute(
+        builder: (context) => LessonDetailPage(lesson: lesson, studentId: widget.student.id),
+        fullscreenDialog: true,
+      ),
     );
 
     if (result == true) {
@@ -72,7 +78,10 @@ class _LessonListPageState extends State<LessonListPage> {
         onItemTap: (lesson) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => LemonTreePage(lesson: lesson)),
+            MaterialPageRoute(
+              builder: (context) => LemonTreePage(lesson: lesson),
+              fullscreenDialog: true,
+            ),
           );
         },
       ),
