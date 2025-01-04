@@ -81,39 +81,11 @@ class _LemonTreePageState extends State<LemonTreePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
-          color: Theme.of(context).primaryColor,
-          child: SafeArea(
-            bottom: false,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.deepPurple),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                  Expanded(
-                    child: Text(
-                      'Lemon Tree: ${widget.lesson.name}',
-                      style: const TextStyle(
-                        color: Colors.deepPurple,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: Stack(
+      appBar: AppBar(
+        title: Text('Lemon Tree: ${widget.lesson.name}'),
+        elevation: 2,
+      ),
+      body: Stack(
             children: [
               LemonCardList(
                 questions: questions,

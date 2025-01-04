@@ -62,37 +62,17 @@ class _LessonListPageState extends State<LessonListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
-          color: Colors.black,
-          child: SafeArea(
-            bottom: false,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Lessons for ${widget.student.name}',
-                    style: TextStyle(
-                      color: Colors.deepPurple,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.add, color: Colors.deepPurple),
-                    onPressed: _navigateToNewLesson,
-                  ),
-                ],
-              ),
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Lessons for ${widget.student.name}'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: _navigateToNewLesson,
           ),
-        ),
-        Expanded(
-          child: LessonList(
+        ],
+      ),
+      body: LessonList(
             lessons: lessons,
             onEdit: _navigateToEditLesson,
             onItemTap: (lesson) {
