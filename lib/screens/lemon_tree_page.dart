@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/lesson.dart';
 import '../models/question.dart';
 import '../models/testAnswer.dart';
@@ -18,6 +19,7 @@ class LemonTreePage extends StatefulWidget {
 }
 
 class _LemonTreePageState extends State<LemonTreePage> {
+  static const MethodChannel _ttsChannel = MethodChannel('com.example.lemoncard/tts');
   final QuestionTable _questionTable = QuestionTable();
   List<Question> questions = [];
   Map<int, TestAnswer?> latestAnswers = {};
@@ -132,9 +134,48 @@ class _LemonTreePageState extends State<LemonTreePage> {
               heroTag: 'test_questions',
               child: const Icon(Icons.play_arrow),
             ),
+            const SizedBox(width: 16),
+            FloatingActionButton(
+              onPressed: _readAllQuestionsAloud,
+              tooltip: 'Read Aloud',
+              heroTag: 'read_aloud',
+              child: const Icon(Icons.volume_up),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _readAllQuestionsAloud() async {
+    if (questions.isEmpty) return;
+
+    // Store context and scaffold messenger before async operations
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+    for (final question in questions) {
+      // Read each question twice
+      for (int i = 0; i < 2; i++) {
+        try {
+          await _ttsChannel.invokeMethod('speak', {'text': question.question});
+          // Wait for speech to complete (estimated 2 seconds)
+          await Future.delayed(const Duration(seconds: 2));
+        } catch (e) {
+          debugPrint('Error reading question: $e');
+          // Show error to user if widget is still mounted
+          if (mounted) {
+            scaffoldMessenger.showSnackBar(
+              SnackBar(
+                content: Text('Failed to read question: ${e.toString()}'),
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
+          return; // Stop if there's an error
+        }
+      }
+      // Wait 5 seconds before next question
+      await Future.delayed(const Duration(seconds: 5));
+    }
   }
 }
