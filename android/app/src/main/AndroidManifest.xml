@@ -1,14 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
     <application
         android:label="lemoncard"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round">
-        <queries>
-            <intent>
-                <action android:name="android.intent.action.TTS_SERVICE" />
-            </intent>
-        </queries>
         <activity
             android:name=".MainActivity"
             android:exported="true"
