@@ -1,15 +1,17 @@
 package com.example.lemoncard
 
 import android.speech.tts.TextToSpeech
-import android.speech.tts.TextToSpeech.OnInitListener
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.util.Locale
 
-class MainActivity: FlutterActivity(), OnInitListener {
+class MainActivity: FlutterActivity(), TextToSpeech.OnInitListener {
+    companion object {
+        private const val CHANNEL = "com.example.lemoncard/tts"
+    }
+
     private lateinit var tts: TextToSpeech
-    private val CHANNEL = "com.example.lemoncard/tts"
     private var ttsInitialized = false
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
