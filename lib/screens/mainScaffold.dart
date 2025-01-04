@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lemoncard/screens/userListPage.dart';
+import 'package:lemoncard/screens/user_list_page.dart';
 import 'package:lemoncard/screens/shopPage.dart';
 import 'package:lemoncard/screens/myPage.dart';
 
