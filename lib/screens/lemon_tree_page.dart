@@ -70,6 +70,7 @@ class _LemonTreePageState extends State<LemonTreePage> {
           lesson: widget.lesson, 
           question: question,
         ),
+        fullscreenDialog: true,
       ),
     );
     if (result == true) {
@@ -96,16 +97,16 @@ class _LemonTreePageState extends State<LemonTreePage> {
           children: [
             FloatingActionButton(
               onPressed: () => _navigateToQuestionDetail(),
-              child: const Icon(Icons.add),
               tooltip: 'Add new question',
               heroTag: 'add_question',
+              child: const Icon(Icons.add),
             ),
             const SizedBox(width: 16),
             FloatingActionButton(
               onPressed: _resetAnswers,
-              child: const Icon(Icons.refresh),
               tooltip: 'Reset answers',
               heroTag: 'reset_answers',
+              child: const Icon(Icons.refresh),
             ),
             const SizedBox(width: 16),
             FloatingActionButton(
@@ -116,6 +117,7 @@ class _LemonTreePageState extends State<LemonTreePage> {
                     builder: (context) => TestLemonTreePage(
                       lessonId: widget.lesson.id,
                     ),
+                    fullscreenDialog: true,
                   ),
                 ).then((_) async {
                   // after pop, refresh questions and latest answers
@@ -126,9 +128,9 @@ class _LemonTreePageState extends State<LemonTreePage> {
                   });
                 });
               },
-              child: const Icon(Icons.play_arrow),
               tooltip: 'Test questions',
               heroTag: 'test_questions',
+              child: const Icon(Icons.play_arrow),
             ),
           ],
         ),
